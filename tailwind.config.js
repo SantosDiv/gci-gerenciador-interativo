@@ -8,9 +8,12 @@ export default {
     extend: {
       colors: {
         grayGCI: {
+          '800': '#262626',
+          '700': '#1A1A1A',
           '600': '#1E1E1E',
           '500': '#373737',
           '200': '#A5A5A5',
+          '100': '#D9D9D9'
         },
         purpleGCI: {
           '700': '#D304BF',
