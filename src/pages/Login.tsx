@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { useNavigate } from 'react-router-dom';
 
 import FirebaseConfig from "@/services/FirebaseConfig";
 import JoiValidation from "@/utils/JoiValidation";
@@ -8,10 +9,12 @@ import Input from '@/components/common/Input';
 
 export default function Login() {
   const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
 
   const handleCreateDoc = async () => {
     // Initialize Firestore
     const db = getFirestore(FirebaseConfig);
+
 
     // Create a new document
     const docRef = await addDoc(collection(db, "disciplines"), {
@@ -27,6 +30,7 @@ export default function Login() {
   const onSubmit = async (data:any) => {
     try {
       await new JoiValidation().loginValidation(data);
+      navigate('/dashboard');
     } catch (error) {
       console.log(error)
     }
