@@ -1,3 +1,4 @@
+import Discipline from "@/components/Discipline";
 import { BiPencil, BiTrash } from "react-icons/bi";
 export default function Home() {
   return (
@@ -10,17 +11,9 @@ export default function Home() {
         </div>
       </section>
       <section className="bg-grayGCI-800 border-grayGCI-500 border-[1px] w-full rounded-3xl flex flex-col text-grayGCI-200 gap-1">
-        <article className="flex justify-between p-2 px-4 items-center cursor-pointer hover:bg-grayGCI-700 hover:rounded-t-3xl">
-          <h4>Sistema de informação e sociedade</h4>
-          <div className="flex items-center gap-7">
-            <div className="bg-greeGCI-600 py-2 px-5 rounded-full">
-              <span>{80}% - Falta Pouco!</span>
-            </div>
-            <button><BiPencil/></button>
-            <button><BiTrash/></button>
-          </div>
-        </article>
-        <hr className="w-[98%] m-auto border-grayGCI-200"/>
+        <Discipline title="Sistema de informação e sociedade"/>
+        <Discipline title="Redes de computadores"/>
+        <Discipline title="Segurança da informação"/>
       </section>
     </main>
   )
