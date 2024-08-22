@@ -1,31 +1,13 @@
 import { useForm } from 'react-hook-form';
-import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { useNavigate } from 'react-router-dom';
 
-import FirebaseConfig from "@/services/FirebaseConfig";
-import JoiValidation from "@/utils/JoiValidation";
-import logo from '@/assets/gci-logo.svg';
 import Input from '@/components/common/Input';
+import logo from '@/assets/gci-logo.svg';
+import JoiValidation from "@/utils/JoiValidation";
 
 export default function Login() {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
-
-  const handleCreateDoc = async () => {
-    // Initialize Firestore
-    const db = getFirestore(FirebaseConfig);
-
-
-    // Create a new document
-    const docRef = await addDoc(collection(db, "disciplines"), {
-      name: "Segurança da informação",
-      id: 3,
-      period: '2024.3',
-      difficult_level: 3
-    });
-
-    alert(`Foi criado um documento de ID: ${docRef.id}`)
-  }
 
   const onSubmit = async (data:any) => {
     try {

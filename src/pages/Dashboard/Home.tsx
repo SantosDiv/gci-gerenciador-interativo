@@ -1,4 +1,4 @@
-import Discipline from "@/components/Discipline";
+import Disciplines from "@/components/Disciplines";
 
 export default function Home() {
   return (
@@ -11,9 +11,7 @@ export default function Home() {
         </div>
       </section>
       <section className="bg-grayGCI-800 border-grayGCI-500 border-[1px] w-full rounded-3xl flex flex-col text-grayGCI-200 gap-1">
-        <Discipline title="Sistema de informação e sociedade" id={1}/>
-        <Discipline title="Redes de computadores" id={2}/>
-        <Discipline title="Segurança da informação" id={3}/>
+        <Disciplines />
       </section>
     </main>
   )

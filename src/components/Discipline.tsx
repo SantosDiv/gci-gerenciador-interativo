@@ -3,7 +3,7 @@ import { BiPencil, BiTrash } from "react-icons/bi";
 import { BsEye } from "react-icons/bs";
 
 interface DisciplineProps {
-  id: number;
+  id: string;
   title: string;
 }
 
