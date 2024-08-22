@@ -1,8 +1,11 @@
 import Login from "@/pages/Login";
-import { Home, RootDash } from '@/pages/Dashboard';
+
+// Dashboard pages
+import { Home, RootDash, DisciplineShow } from '@/pages/Dashboard';
 
 export {
   Login,
   Home,
-  RootDash
+  RootDash,
+  DisciplineShow
 }
