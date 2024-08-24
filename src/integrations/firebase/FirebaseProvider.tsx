@@ -3,16 +3,16 @@ import FirebaseApp from './FirebaseConfig';
 import rescueError from '@/utils/rescueError';
 
 class FirbaseProvider {
-  private _db;
-
-  constructor(){
-    this._db = getFirestore(FirebaseApp)
-  }
 
   async getDocsByCollection(collectionName: string) {
     try {
-      const querySnapshot = await getDocs(collection(this._db, collectionName));
-      const docs = querySnapshot.docs.map(doc => ({ id: doc.id, name: doc.data().name, ...doc.data() }));
+      const db = getFirestore(FirebaseApp)
+      const querySnapshot = await getDocs(collection(db, collectionName));
+
+      const docs = querySnapshot.docs.map(doc => {
+        const { name, difficult_level, period, themes } = doc.data();
+        return { id: doc.id, name, difficult_level, period, themes };
+      });
       return docs;
     } catch (error) {
       rescueError(error);
@@ -21,11 +21,14 @@ class FirbaseProvider {
 
   async getDocById(collectionName: string, docId: string) {
     try {
-      const docRef = doc(this._db, collectionName, docId);
+      const db = getFirestore(FirebaseApp)
+      const docRef = doc(db, collectionName, docId);
       const docSnapshot = await getDoc(docRef);
 
       if (docSnapshot.exists()) {
-        return { id: docSnapshot.id, ...docSnapshot.data() };
+        const { name, difficult_level, period, themes } = docSnapshot.data();
+
+        return { id: docSnapshot.id, name, difficult_level, period, themes };
       } else {
         throw new Error("Documento não encontrado");
       }
@@ -36,7 +39,8 @@ class FirbaseProvider {
 
   async createDoc(collectionName:string, params:any) {
     try {
-      const docRef = await addDoc(collection(this._db, collectionName), {
+      const db = getFirestore(FirebaseApp)
+      const docRef = await addDoc(collection(db, collectionName), {
        name: params.name,
        period: params.period,
        difficult_level: params.difficultLevel
@@ -50,7 +54,8 @@ class FirbaseProvider {
 
   async updateDoc(collectionName: string, docId: string, params: any) {
     try {
-      const docRef = doc(this._db, collectionName, docId);
+      const db = getFirestore(FirebaseApp)
+      const docRef = doc(db, collectionName, docId);
       await updateDoc(docRef, {
         name: params.name,
         period: params.period,
@@ -65,7 +70,8 @@ class FirbaseProvider {
 
   async deleteDoc(collectionName: string, docId: string) {
     try {
-      const docRef = doc(this._db, collectionName, docId);
+      const db = getFirestore(FirebaseApp)
+      const docRef = doc(db, collectionName, docId);
       await deleteDoc(docRef);
       return `Documento ${docId} deletado com sucesso`;
     } catch (error) {
