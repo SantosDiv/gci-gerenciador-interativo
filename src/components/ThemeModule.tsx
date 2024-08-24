@@ -3,18 +3,36 @@ import { FaNoteSticky } from "react-icons/fa6";
 import { BiTrash } from "react-icons/bi";
 import { GiPartyPopper } from "react-icons/gi";
 import { BsCheckLg } from "react-icons/bs";
-import { DisciplineModulesInterface } from "@/interfaces/DisciplinesInterface";
+import { DisciplineInterface, DisciplineModulesInterface, DisciplineThemeInterface } from "@/interfaces/DisciplinesInterface";
 import clsx from "clsx";
+import { useContext, useEffect, useState } from "react";
+import DisciplineContext from "@/contexts/DisciplinesContext";
+import Discipline from "@/domain/Discipline";
 
 interface ThemeModuleProps {
   module:DisciplineModulesInterface;
+  discipline: Discipline
+  theme: DisciplineThemeInterface
 }
 
 
-export default function ThemeModule({ module }:ThemeModuleProps) {
+export default function ThemeModule({ module, discipline }:ThemeModuleProps) {
 
-  const checkModule = () => {
+  const { updateDiscipline, loading } = useContext(DisciplineContext);
 
+  const checkModule = async () => {
+    discipline.changeStatusModule(module);
+
+    await updateDiscipline(discipline);
+  }
+
+
+  if (loading) {
+    return (
+      <article className={clsx("flex justify-between items-center p-3 border-grayGCI-500 border-b-[1px] hover:bg-grayGCI-500")}>
+        <span>Atualizando...</span>
+      </article>
+    )
   }
 
   return (
@@ -37,7 +55,7 @@ export default function ThemeModule({ module }:ThemeModuleProps) {
 
       {/* annotations, delete */}
       <div className="flex items-center gap-4">
-        { module.anotations.length && <Link to="/"><FaNoteSticky/></Link>}
+        { module.anotations?.length && <Link to="/"><FaNoteSticky/></Link>}
         <button><BiTrash/></button>
       </div>
     </article>

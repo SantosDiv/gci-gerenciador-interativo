@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { BiPencil, BiTrash } from "react-icons/bi";
@@ -6,37 +6,34 @@ import { MainTableSelect, MainTableLineTitle, MainTable } from "@/components/com
 import DisciplineContext from "@/contexts/DisciplinesContext";
 import { DisciplineThemeInterface } from "@/interfaces/DisciplinesInterface";
 import ThemeModule from "@/components/ThemeModule";
-import { calcPercent } from "@/utils/calcPercent";
+import { getMotivationalPhrase } from "@/utils/calcPercent";
 import clsx from "clsx";
 import TitleSection from "@/components/common/TitleSection";
 
 export default function DisciplineShow() {
   const { id } = useParams();
-  const { getDocById, discipline } = useContext(DisciplineContext);
+  const { getDisciplineById, discipline, loading } = useContext(DisciplineContext);
 
   useEffect(() => {
     if(id) {
-      getDocById(id);
+      getDisciplineById(id);
     }
   }, []);
 
   const getOptions = (theme: DisciplineThemeInterface) => {
     const { modules } = theme;
-    return modules.map((module) => <ThemeModule key={module.id} module={module}/>)
+    return modules.map((module) => <ThemeModule key={module.id} module={module} theme={theme} discipline={discipline} />)
   }
 
-  const renderPercentWithMotivacionalPrhase = (theme: DisciplineThemeInterface) => {
-    const { modules } = theme;
-    const modulesChecked = modules.filter((module) => module.checked);
-    const { percent, motivationalPhrase, bgColor } = calcPercent(modulesChecked.length, modules.length, true);
-
-    return (<div
+  const renderPercentWithMotivacionalPhrase = (percent: number) => {
+    const { motivationalPhrase, bgColor } = getMotivationalPhrase(percent);
+    return <div
               style={{
                 background: bgColor
               }}
               className={clsx("py-2 px-5 rounded-full")}>
             <span>{`${percent}% - ${motivationalPhrase}`}</span>
-          </div>)
+          </div>
   }
 
   return <>
@@ -49,7 +46,9 @@ export default function DisciplineShow() {
             <IoIosArrowDown/>
             <button><BiPencil/></button>
             <button><BiTrash/></button>
-            {renderPercentWithMotivacionalPrhase(theme)}
+            { loading
+             ? <>Carregando...</>
+             : renderPercentWithMotivacionalPhrase(theme.percent)}
           </div>
       </MainTableSelect>)
 

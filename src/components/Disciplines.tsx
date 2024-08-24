@@ -7,10 +7,10 @@ import { MainTable, MainTableLine, MainTableLineTitle } from "@/components/commo
 import DisciplineContext from "@/contexts/DisciplinesContext";
 
 export default function Disciplines() {
-  const { getDocsByCollectionName, disciplines } = useContext(DisciplineContext);
+  const { getAllDisciplines, disciplines } = useContext(DisciplineContext);
 
   useEffect(() => {
-    getDocsByCollectionName('disciplines');
+    getAllDisciplines('disciplines');
   }, []);
 
   return(

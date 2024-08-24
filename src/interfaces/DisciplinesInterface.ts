@@ -12,6 +12,7 @@ interface DisciplineModulesInterface {
 interface DisciplineThemeInterface {
   title: string;
   modules: DisciplineModulesInterface[]
+  percent: number;
 }
 interface DisciplineInterface {
   id: string;

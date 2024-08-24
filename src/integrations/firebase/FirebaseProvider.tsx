@@ -56,11 +56,7 @@ class FirbaseProvider {
     try {
       const db = getFirestore(FirebaseApp)
       const docRef = doc(db, collectionName, docId);
-      await updateDoc(docRef, {
-        name: params.name,
-        period: params.period,
-        difficult_level: params.difficultLevel
-      });
+      await updateDoc(docRef, params);
 
       return `Documento ${docId} atualizado com sucesso`;
     } catch (error) {

@@ -1,7 +1,11 @@
-export const calcPercent = (items:number, totalItems:number, withPrhase: boolean) => {
+export const calcPercent = (items:number, totalItems:number) => {
+  const percent = (items/totalItems) * 100;
+  return percent;
+}
+
+export const getMotivationalPhrase = (percent: number) => {
   let motivationalPhrase = 'Vamos começar';
   let bgColor = "#1E1E1E";
-  const percent = (items/totalItems) * 100;
   if(percent > 10 && percent <= 40) {
     motivationalPhrase = "Continue assim!"
     bgColor = "#895F05";
@@ -15,13 +19,6 @@ export const calcPercent = (items:number, totalItems:number, withPrhase: boolean
     motivationalPhrase = "Você conseguiu!"
     bgColor = '#035F54';
   }
-  if (withPrhase) {
-    return {
-      percent,
-      motivationalPhrase,
-      bgColor
-    }
-  }
 
-  return {percent};
+  return { motivationalPhrase, bgColor };
 }

@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react"
+import { ReactNode, useEffect, useState } from "react"
 
 interface MainTableSelectProps {
   options: Array<ReactNode>
@@ -13,16 +13,18 @@ export default function MainTableSelect({ options, children}:MainTableSelectProp
   }
 
   return(
-    <article
-      className="flex flex-col border-grayGCI-500  border-b-[1px] last:border-none hover:bg-grayGCI-700 hover:first:rounded-t-3xl hover:last:rounded-b-3xl"
-      onClick={handleOptions}
-    >
-      <div className="flex justify-between p-2 px-4 items-center">
-        {children}
-      </div>
+    <div>
+      <article
+        className="flex flex-col border-grayGCI-500  border-b-[1px] last:border-none hover:bg-grayGCI-700 hover:first:rounded-t-3xl hover:last:rounded-b-3xl"
+        onClick={handleOptions}
+      >
+        <div className="flex justify-between p-2 px-4 items-center">
+          {children}
+        </div>
+      </article>
       { showOptions && <article className="flex flex-col p-2 px-4 ">
         {options.map((item) => item)}
       </article>}
-    </article>
+    </div>
   )
 }
