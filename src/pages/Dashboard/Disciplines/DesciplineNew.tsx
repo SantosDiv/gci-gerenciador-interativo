@@ -9,7 +9,7 @@ import CustomButton from '@/components/common/CustomButton';
 
 import JoiValidation from "@/utils/JoiValidation";
 import DisciplineContext from '@/contexts/DisciplinesContext';
-import { DisciplineInterface } from '@/interfaces/DisciplinesInterface';
+
 import generateRandomString from '@/utils/generateRandomString';
 import { CreateDisciplineParams } from '@/interfaces/joiValidationInterface';
 

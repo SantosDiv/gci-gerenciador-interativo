@@ -1,6 +1,5 @@
 import { createContext, useState } from "react";
 import FirebaseProvider from "@/integrations/firebase/FirebaseProvider";
-import { DisciplineInterface } from "@/interfaces/DisciplinesInterface";
 import Discipline from "@/domain/Discipline";
 import { CreateDisciplineParams } from "@/interfaces/joiValidationInterface";
 

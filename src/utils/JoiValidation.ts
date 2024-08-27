@@ -1,4 +1,4 @@
-import Joi, { array } from "joi";
+import Joi from "joi";
 import { LoginValidationParams, CreateDisciplineParams } from "@/interfaces/joiValidationInterface";
 import rescueError from "@/utils/rescueError";
 
