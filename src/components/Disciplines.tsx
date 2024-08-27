@@ -16,7 +16,6 @@ export default function Disciplines() {
   }, []);
 
   const renderPercentWithMotivacionalPhrase = (discipline: any) => {
-    console.log(discipline);
     const { motivationalPhrase, bgColor } = getMotivationalPhrase(Number(discipline.percent));
     return <div
               style={{

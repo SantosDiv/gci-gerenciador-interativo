@@ -1,9 +1,27 @@
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { FaBrain } from "react-icons/fa";
 import SideBarMenu from "@/components/common/SideBarMenu";
+import { useEffect, useState } from "react";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { auth } from "@/integrations/firebase/FirebaseConfig";
+
 
 
 export default function RootDash() {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  if(!loading && !user) { return <Navigate to='/' replace /> }
+
   return (
     <main className="flex gap-9 h-screen w-screen p-10 box-border">
       <SideBarMenu/>

@@ -1,5 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { auth } from '@/integrations/firebase/FirebaseConfig';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 import Input from '@/components/common/Input';
 import logo from '@/assets/gci-logo.svg';
@@ -12,8 +14,11 @@ export default function Login() {
   const onSubmit = async (data:any) => {
     try {
       await new JoiValidation().loginValidation(data);
+      await signInWithEmailAndPassword(auth, data.email, data.password);
+
       navigate('/dashboard');
     } catch (error) {
+      alert(error);
       console.log(error)
     }
   }
@@ -32,7 +37,7 @@ export default function Login() {
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center bg-grayGCI-600 w-[90%] lg:w-[60%] py-[7em] rounded-3xl gap-5">
         <h1 className='font-bold text-[1.5em]'>Fazer login</h1>
 
-        <Input type='text' placeholder='Username' register={register} name='username' className='w-[80%]'/>
+        <Input type='text' placeholder='Email' register={register} name='email' className='w-[80%]'/>
         <Input type='password' placeholder='Password' register={register} name='password' className='w-[80%]'/>
 
         <button type='submit' className='bg-blueGCI-500 p-3 rounded-full w-[80%]'>Entrar</button>

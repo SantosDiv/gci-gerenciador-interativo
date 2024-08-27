@@ -1,7 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { BiPlus } from 'react-icons/bi';
+import { signOut } from 'firebase/auth';
 import { FaNoteSticky } from "react-icons/fa6";
 import { FiLogOut } from "react-icons/fi";
+import { auth } from '@/integrations/firebase/FirebaseConfig';
 
 import CustomButton from '@/components/common/CustomButton';
 
@@ -10,8 +12,13 @@ import logo from '@/assets/gci-logo.svg';
 export default function SideBarMenu() {
   const navigate = useNavigate();
 
-  const signOut = () => {
-    navigate('/');
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate('/');
+    } catch (error) {
+      alert(error);
+    }
   }
 
   return(
@@ -25,7 +32,7 @@ export default function SideBarMenu() {
       </div>
 
 
-      <CustomButton value="Logout" icon={<FiLogOut/>} variant='secondary' className='!w-[80%]' onClick={signOut}/>
+      <CustomButton value="Logout" icon={<FiLogOut/>} variant='secondary' className='!w-[80%]' onClick={handleLogout}/>
 
     </aside>
   );
