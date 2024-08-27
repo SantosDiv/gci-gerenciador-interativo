@@ -19,7 +19,7 @@ export default function SideBarMenu() {
       <div className='flex flex-col items-center w-full'>
         <img src={logo} alt="Logo gci medium" className='h-[4rem] mt-10' />
         <nav className='mt-10 w-[80%] flex flex-col gap-5'>
-          <CustomButton value="Nova Matéria" icon={<BiPlus/>} />
+          <CustomButton onClick={() => navigate('/dashboard/disciplines/new')} value="Nova Matéria" icon={<BiPlus/>} />
           <CustomButton value="Anotações" icon={<FaNoteSticky/>} variant='secondary'/>
         </nav>
       </div>

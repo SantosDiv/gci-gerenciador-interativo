@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
-import { Login, Home, RootDash, DisciplineShow} from './pages';
+import { Login, Home, RootDash, DisciplineShow, DisciplineNew } from './pages';
 
 function ProtectedRoute({ children }:any) {
   const logged = true;
@@ -21,7 +21,7 @@ export default function MainRoutes() {
             <Route path='' element={<Home/>}/>
             <Route path='disciplines'>
               <Route path=':id' element={<DisciplineShow/>}/>
-              <Route path='new' element={<>Nova matéria</>}/>
+              <Route path='new' element={<DisciplineNew/>}/>
               <Route path=':id/edit' element={<>Editar metéria</>}/>
             </Route>
 

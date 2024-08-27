@@ -2,6 +2,7 @@ import { createContext, useState } from "react";
 import FirebaseProvider from "@/integrations/firebase/FirebaseProvider";
 import { DisciplineInterface } from "@/interfaces/DisciplinesInterface";
 import Discipline from "@/domain/Discipline";
+import { CreateDisciplineParams } from "@/interfaces/joiValidationInterface";
 
 interface DisciplineContextInterface {
   disciplines: Discipline[];
@@ -10,6 +11,7 @@ interface DisciplineContextInterface {
   getAllDisciplines(collectionName: string): Promise<void>;
   getDisciplineById(docId: string): Promise<void>
   updateDiscipline(params: Discipline): Promise<void>
+  createDiscipline(params: CreateDisciplineParams): Promise<void>
 }
 
 const DisciplineContext = createContext<DisciplineContextInterface>({} as DisciplineContextInterface);
@@ -62,6 +64,12 @@ export const DisciplineContextProvider = ({ children }:any) => {
     setLoading(false);
   }
 
+  const createDiscipline = async (params: CreateDisciplineParams) => {
+    setLoading(true);
+    await firebaseProvider.createDoc('disciplines', params);
+    setLoading(false);
+  }
+
   return (
     <DisciplineContext.Provider
       value={{
@@ -70,7 +78,8 @@ export const DisciplineContextProvider = ({ children }:any) => {
         loading,
         getAllDisciplines,
         getDisciplineById,
-        updateDiscipline
+        updateDiscipline,
+        createDiscipline
       }}
     >
       {children}

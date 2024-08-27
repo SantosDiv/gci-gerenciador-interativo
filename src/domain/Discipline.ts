@@ -52,7 +52,7 @@ class Discipline {
     return theme.modules.filter((module) => module.checked);
   }
 
-  recalcPercente(theme: DisciplineThemeInterface) {
+  recalcPercente(theme: any) {
     const modulesChecked = this.modulesCheckedByTheme(theme);
     const percent = calcPercent(modulesChecked.length, theme.modules.length);
     theme.percent = percent;

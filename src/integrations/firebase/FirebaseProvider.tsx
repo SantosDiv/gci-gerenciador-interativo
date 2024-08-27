@@ -43,7 +43,8 @@ class FirbaseProvider {
       const docRef = await addDoc(collection(db, collectionName), {
        name: params.name,
        period: params.period,
-       difficult_level: params.difficultLevel
+       difficult_level: params.difficult_level,
+       themes: params.themes
      });
 
      return docRef.id;

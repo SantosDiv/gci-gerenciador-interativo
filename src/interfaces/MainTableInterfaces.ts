@@ -1,7 +1,8 @@
 import { ReactNode } from "react";
 
 interface MainTableProps {
-  children: ReactNode
+  children: ReactNode,
+  className?: string,
 }
 
 export type {

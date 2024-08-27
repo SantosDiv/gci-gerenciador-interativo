@@ -3,13 +3,14 @@ interface DisciplineModuleAnnotation {
   text: string;
 }
 interface DisciplineModulesInterface {
-  id: number;
+  id: string;
   title: string;
   checked: boolean;
   anotations: DisciplineModuleAnnotation[]
 }
 
 interface DisciplineThemeInterface {
+  id?:string;
   title: string;
   modules: DisciplineModulesInterface[]
   percent: number;
