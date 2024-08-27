@@ -5,6 +5,8 @@ import { BiPencil, BiTrash } from "react-icons/bi";
 
 import { MainTable, MainTableLine, MainTableLineTitle } from "@/components/common/MainTable";
 import DisciplineContext from "@/contexts/DisciplinesContext";
+import { getMotivationalPhrase } from "@/utils/calcPercent";
+import clsx from "clsx";
 
 export default function Disciplines() {
   const { getAllDisciplines, disciplines } = useContext(DisciplineContext);
@@ -12,6 +14,18 @@ export default function Disciplines() {
   useEffect(() => {
     getAllDisciplines('disciplines');
   }, []);
+
+  const renderPercentWithMotivacionalPhrase = (discipline: any) => {
+    console.log(discipline);
+    const { motivationalPhrase, bgColor } = getMotivationalPhrase(Number(discipline.percent));
+    return <div
+              style={{
+                background: bgColor
+              }}
+              className={clsx("py-2 px-5 rounded-full")}>
+            <span>{`${discipline.percent}% - ${motivationalPhrase}`}</span>
+          </div>
+  }
 
   return(
     <>
@@ -23,9 +37,10 @@ export default function Disciplines() {
             <Link to={`disciplines/${discipline.id}`}><BsEye/></Link>
             <button><BiPencil/></button>
             <button><BiTrash/></button>
-            <div className="bg-greeGCI-600 py-2 px-5 rounded-full">
-              <span>{80}% - Falta Pouco!</span>
-            </div>
+            { renderPercentWithMotivacionalPhrase(discipline) }
+            {/* <div className="bg-greeGCI-600 py-2 px-5 rounded-full">
+              <span>{}% - Falta Pouco!</span>
+            </div> */}
           </div>
         </MainTableLine>)
       }

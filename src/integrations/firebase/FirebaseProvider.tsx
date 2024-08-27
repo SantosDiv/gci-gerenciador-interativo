@@ -10,8 +10,8 @@ class FirbaseProvider {
       const querySnapshot = await getDocs(collection(db, collectionName));
 
       const docs = querySnapshot.docs.map(doc => {
-        const { name, difficult_level, period, themes } = doc.data();
-        return { id: doc.id, name, difficult_level, period, themes };
+        const { name, difficult_level, period, themes, percent } = doc.data();
+        return { id: doc.id, name, difficult_level, period, themes, percent };
       });
       return docs;
     } catch (error) {
@@ -26,9 +26,9 @@ class FirbaseProvider {
       const docSnapshot = await getDoc(docRef);
 
       if (docSnapshot.exists()) {
-        const { name, difficult_level, period, themes } = docSnapshot.data();
+        const { name, difficult_level, period, themes, percent } = docSnapshot.data();
 
-        return { id: docSnapshot.id, name, difficult_level, period, themes };
+        return { id: docSnapshot.id, name, difficult_level, period, themes, percent };
       } else {
         throw new Error("Documento não encontrado");
       }

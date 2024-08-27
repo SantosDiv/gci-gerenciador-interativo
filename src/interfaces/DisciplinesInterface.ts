@@ -19,6 +19,7 @@ interface DisciplineInterface {
   id: string;
   name: string;
   period: string;
+  percent: number;
   difficult_level: number;
   themes: DisciplineThemeInterface[]
 }
