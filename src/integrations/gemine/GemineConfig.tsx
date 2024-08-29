@@ -58,8 +58,6 @@ async function runChat(prompt:string, history:any) {
   const modelMessageHistory = { role: 'model', message: result.response.text() };
   history.push(modelMessageHistory)
 
-  console.log(history, 'history atualizado')
-
   return { responseStream: result.response, history };
 }
 
