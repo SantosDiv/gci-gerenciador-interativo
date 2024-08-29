@@ -8,7 +8,6 @@ function ProtectedRoute({ children }:any) {
     return <Navigate to={'/'} replace/>;
   }
 
-
   return children ? children : <Outlet/>;
 }
 

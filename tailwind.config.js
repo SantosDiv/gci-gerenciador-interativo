@@ -17,6 +17,7 @@ export default {
         },
         purpleGCI: {
           '700': '#D304BF',
+          '600': '#9804D3'
         },
         greeGCI: {
           '700': '#016545',
