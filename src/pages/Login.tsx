@@ -14,7 +14,8 @@ export default function Login() {
   const onSubmit = async (data:any) => {
     try {
       await new JoiValidation().loginValidation(data);
-      await signInWithEmailAndPassword(auth, data.email, data.password);
+      const result = await signInWithEmailAndPassword(auth, data.email, data.password);
+      localStorage.setItem('uid', result.user.uid);
 
       navigate('/dashboard');
     } catch (error) {
