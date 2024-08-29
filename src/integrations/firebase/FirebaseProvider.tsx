@@ -1,4 +1,3 @@
-import { getAuth } from "firebase/auth";
 import { collection, doc, getDocs, getDoc, addDoc, updateDoc, deleteDoc, getFirestore, query, where } from "firebase/firestore";
 import FirebaseApp from './FirebaseConfig';
 import rescueError from '@/utils/rescueError';

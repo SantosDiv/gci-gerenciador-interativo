@@ -1,7 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { BiPlus } from 'react-icons/bi';
 import { signOut } from 'firebase/auth';
-import { FaNoteSticky } from "react-icons/fa6";
 import { FiLogOut } from "react-icons/fi";
 import { auth } from '@/integrations/firebase/FirebaseConfig';
 

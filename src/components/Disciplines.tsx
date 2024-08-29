@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { BsEye } from "react-icons/bs";
 import { Link } from "react-router-dom";
-import { BiPencil, BiTrash } from "react-icons/bi";
+import { BiTrash } from "react-icons/bi";
 
 import { MainTable, MainTableLine, MainTableLineTitle } from "@/components/common/MainTable";
 import DisciplineContext from "@/contexts/DisciplinesContext";

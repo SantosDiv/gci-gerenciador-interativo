@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { IoIosArrowDown } from "react-icons/io";
-import { BiPencil, BiTrash } from "react-icons/bi";
+// import { BiPencil, BiTrash } from "react-icons/bi";
 import { MainTableSelect, MainTableLineTitle, MainTable } from "@/components/common/MainTable";
 import DisciplineContext from "@/contexts/DisciplinesContext";
 import { DisciplineThemeInterface } from "@/interfaces/DisciplinesInterface";
