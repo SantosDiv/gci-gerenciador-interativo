@@ -7,9 +7,10 @@ import { MainTable, MainTableLine, MainTableLineTitle } from "@/components/commo
 import DisciplineContext from "@/contexts/DisciplinesContext";
 import { getMotivationalPhrase } from "@/utils/calcPercent";
 import clsx from "clsx";
+import Discipline from "@/domain/Discipline";
 
 export default function Disciplines() {
-  const { getAllDisciplines, disciplines } = useContext(DisciplineContext);
+  const { getAllDisciplines, deleteDiscipline, disciplines, loading } = useContext(DisciplineContext);
 
   useEffect(() => {
     getAllDisciplines('disciplines');
@@ -17,6 +18,7 @@ export default function Disciplines() {
 
   const renderPercentWithMotivacionalPhrase = (discipline: any) => {
     const { motivationalPhrase, bgColor } = getMotivationalPhrase(Number(discipline.percent));
+
     return <div
               style={{
                 background: bgColor
@@ -26,20 +28,28 @@ export default function Disciplines() {
           </div>
   }
 
+  const handleDelete = async (discipline: Discipline) => {
+    try {
+      await deleteDiscipline(discipline);
+      getAllDisciplines('disciplines');
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return(
     <>
     <MainTable>
       {
-        disciplines.map((discipline) => <MainTableLine>
+        loading ?
+        <p>Carregando..</p>
+        : disciplines.map((discipline) => <MainTableLine key={discipline.id}>
           <MainTableLineTitle text={discipline.name} />
           <div className="flex items-center gap-7">
             <Link to={`disciplines/${discipline.id}`}><BsEye/></Link>
-            <button><BiPencil/></button>
-            <button><BiTrash/></button>
+            {/* <button><BiPencil/></button> */}
+            <button onClick={() => handleDelete(discipline)}><BiTrash/></button>
             { renderPercentWithMotivacionalPhrase(discipline) }
-            {/* <div className="bg-greeGCI-600 py-2 px-5 rounded-full">
-              <span>{}% - Falta Pouco!</span>
-            </div> */}
           </div>
         </MainTableLine>)
       }

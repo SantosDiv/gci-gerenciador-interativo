@@ -7,15 +7,24 @@ interface DisciplineContextInterface {
   disciplines: Discipline[];
   discipline: Discipline;
   loading: boolean;
+  currentUser: UserInterface | null;
   getAllDisciplines(collectionName: string): Promise<void>;
   getDisciplineById(docId: string): Promise<void>
   updateDiscipline(params: Discipline): Promise<void>
   createDiscipline(params: CreateDisciplineParams): Promise<void>
+  deleteDiscipline(discipline: Discipline): Promise<void>
+  setCurrentUser(user: UserInterface): void
+}
+
+export interface UserInterface {
+  uid: string;
+  email: string;
 }
 
 const DisciplineContext = createContext<DisciplineContextInterface>({} as DisciplineContextInterface);
 
 export const DisciplineContextProvider = ({ children }:any) => {
+  const [currentUser, setCurrentUser] = useState<UserInterface | null>(null);
   const [disciplines, setDisciplines] = useState<Discipline[]>([]);
   const [discipline, setDiscipline] = useState<Discipline>({} as Discipline);
   const [loading, setLoading] = useState(false);
@@ -23,20 +32,12 @@ export const DisciplineContextProvider = ({ children }:any) => {
 
   const getAllDisciplines = async (collectionName:string) => {
     setLoading(true);
-    const result = await firebaseProvider.getDocsByCollection(collectionName);
+    const result = await firebaseProvider.getDocsByCollection(collectionName, currentUser);
     if (result) {
       const disciplinesClass = result.map((item) => new Discipline(item));
       setDisciplines(disciplinesClass);
       setLoading(false)
     }
-
-    // setDisciplines([{
-    //   id: "dsdsd",
-    //   name: "Sistemas de informação",
-    //   period: "2024.1",
-    //   difficult_level: 3,
-    //   themes: [{title: 'Tema 1', modules: [{ id: 1, title: "Modulo 1", anotations: [{ title: 'Anotação 1', text: "TEstando"}], checked: false}]}]
-    // }])
   }
 
   const getDisciplineById = async (docId:string) => {
@@ -47,13 +48,6 @@ export const DisciplineContextProvider = ({ children }:any) => {
       setDiscipline(disciplineClass);
       setLoading(false);
     }
-    // const themes = [
-    //   {title: 'Tema 1', percent: 0, modules: [{ id: 1, title: "Modulo 1", anotations: [{ title: 'Anotação 1', text: "TEstando"}], checked: false}]},
-    //   {title: 'Tema 2', percent: 0, modules: [{ id: 2, title: "Modulo 1", anotations: [{ title: 'Anotação 1', text: "TEstando"}], checked: true}]},
-    //   {title: 'Tema 3', percent: 0, modules: [{ id: 3, title: "Modulo 1", anotations: [{ title: 'Anotação 1', text: "TEstando"}], checked: false}]}
-    // ]
-
-    // setDiscipline(new Discipline({ id: 'sdsd', name: "Teste", period: "", difficult_level: 1, themes }))
   }
 
   const updateDiscipline = async (discipline: Discipline) =>  {
@@ -65,7 +59,13 @@ export const DisciplineContextProvider = ({ children }:any) => {
 
   const createDiscipline = async (params: CreateDisciplineParams) => {
     setLoading(true);
-    await firebaseProvider.createDoc('disciplines', params);
+    await firebaseProvider.createDoc('disciplines', params, currentUser);
+    setLoading(false);
+  }
+
+  const deleteDiscipline = async(discipline: Discipline) => {
+    setLoading(true);
+    await firebaseProvider.deleteDoc('disciplines', discipline.id);
     setLoading(false);
   }
 
@@ -75,10 +75,13 @@ export const DisciplineContextProvider = ({ children }:any) => {
         discipline,
         disciplines,
         loading,
+        currentUser,
         getAllDisciplines,
         getDisciplineById,
         updateDiscipline,
-        createDiscipline
+        createDiscipline,
+        deleteDiscipline,
+        setCurrentUser
       }}
     >
       {children}

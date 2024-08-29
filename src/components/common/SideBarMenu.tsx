@@ -14,6 +14,7 @@ export default function SideBarMenu() {
 
   const handleLogout = async () => {
     try {
+      localStorage.removeItem('uid');
       await signOut(auth);
       navigate('/');
     } catch (error) {
@@ -27,7 +28,7 @@ export default function SideBarMenu() {
         <Link to='/dashboard'><img src={logo} alt="Logo gci medium" className='h-[4rem] mt-10' /></Link>
         <nav className='mt-10 w-[80%] flex flex-col gap-5'>
           <CustomButton onClick={() => navigate('/dashboard/disciplines/new')} value="Nova Matéria" icon={<BiPlus/>} />
-          <CustomButton value="Anotações" icon={<FaNoteSticky/>} variant='secondary'/>
+          {/* <CustomButton value="Anotações" icon={<FaNoteSticky/>} variant='secondary'/> */}
         </nav>
       </div>
 

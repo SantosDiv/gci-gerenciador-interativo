@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import { FaNoteSticky } from "react-icons/fa6";
-import { BiTrash } from "react-icons/bi";
+// import { BiTrash } from "react-icons/bi";
 import { GiPartyPopper } from "react-icons/gi";
 import { BsCheckLg } from "react-icons/bs";
-import { DisciplineInterface, DisciplineModulesInterface, DisciplineThemeInterface } from "@/interfaces/DisciplinesInterface";
+import { DisciplineModulesInterface, DisciplineThemeInterface } from "@/interfaces/DisciplinesInterface";
 import clsx from "clsx";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import DisciplineContext from "@/contexts/DisciplinesContext";
 import Discipline from "@/domain/Discipline";
 
@@ -56,7 +56,7 @@ export default function ThemeModule({ module, discipline }:ThemeModuleProps) {
       {/* annotations, delete */}
       <div className="flex items-center gap-4">
         { module.anotations?.length && <Link to="/"><FaNoteSticky/></Link>}
-        <button><BiTrash/></button>
+        {/* <button><BiTrash/></button> */}
       </div>
     </article>
   )

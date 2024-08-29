@@ -37,6 +37,7 @@ class JoiValidation {
       name: Joi.string().required(),
       period: Joi.string().required(),
       difficult_level: Joi.string().required(),
+      percent: Joi.number(),
       themes: Joi.array().items(themes)
     });
 

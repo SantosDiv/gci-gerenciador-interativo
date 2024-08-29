@@ -1,22 +1,26 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { FaBrain } from "react-icons/fa";
 
-import { onAuthStateChanged, User } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/integrations/firebase/FirebaseConfig";
 
 import SideBarMenu from "@/components/common/SideBarMenu";
 import Chat from "@/components/Chat";
+import DisciplineContext from "@/contexts/DisciplinesContext";
 
 
 export default function RootDash() {
-  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [showChat, setShowChat] = useState(false);
+  const { setCurrentUser, currentUser } = useContext(DisciplineContext);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+      if (currentUser) {
+        setCurrentUser({uid: currentUser.uid, email: currentUser.email || ''});
+        localStorage.setItem('uid', currentUser.uid);
+      }
       setLoading(false);
     });
 
@@ -27,7 +31,7 @@ export default function RootDash() {
     setShowChat(!showChat)
   }
 
-  if(!loading && !user) { return <Navigate to='/' replace /> }
+  if(!loading && !currentUser) { return <Navigate to='/' replace /> }
 
   return (
     <main className="flex gap-9 h-screen w-screen p-10 box-border">

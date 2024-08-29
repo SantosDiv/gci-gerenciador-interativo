@@ -24,6 +24,7 @@ interface CreateDisciplineParams {
   name: string;
   period: string;
   difficult_level: number;
+  percent: number;
   themes: DisciplineThemeInterfaceRequest[]
 }
 

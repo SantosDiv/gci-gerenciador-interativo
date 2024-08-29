@@ -44,8 +44,8 @@ export default function DisciplineShow() {
           <MainTableLineTitle text={theme.title} />
           <div className="flex items-center gap-7">
             <IoIosArrowDown/>
-            <button><BiPencil/></button>
-            <button><BiTrash/></button>
+            {/* <button><BiPencil/></button> */}
+            {/* <button><BiTrash/></button> */}
             { loading
              ? <>Carregando...</>
              : renderPercentWithMotivacionalPhrase(theme.percent)}

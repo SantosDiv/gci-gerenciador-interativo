@@ -27,6 +27,7 @@ export default function DisciplineNew() {
         name: data.name,
         period: data.period,
         difficult_level: data.difficult_level,
+        percent: 0,
         themes
       } as CreateDisciplineParams;
 
