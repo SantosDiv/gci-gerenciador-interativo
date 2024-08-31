@@ -1,5 +1,15 @@
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
-import { Login, Home, RootDash, DisciplineShow, DisciplineNew } from './pages';
+import {
+  Login,
+  Home,
+  RootDash,
+  DisciplineShow,
+  DisciplineNew,
+  Annotations,
+  AnnotationEdit,
+  AnnotationNew,
+  AnnotationShow
+} from './pages';
 
 function ProtectedRoute({ children }:any) {
   const logged = true;
@@ -26,8 +36,11 @@ export default function MainRoutes() {
             </Route>
 
             <Route path='themes/:id/edit' element={<>Editar tema</>} />
-            <Route path='annotations' element={<>Minhas anotações</>}>
-              <Route path='new' element={<>Nova anotação</>} />
+            <Route path='annotations'>
+              <Route path='' element={<Annotations/>}/>
+              <Route path=':id' element={<AnnotationShow/>} />
+              <Route path='new' element={<AnnotationNew/>} />
+              <Route path=':id/edit' element={<AnnotationEdit/>} />
             </Route>
           </Route>
         </Route>
