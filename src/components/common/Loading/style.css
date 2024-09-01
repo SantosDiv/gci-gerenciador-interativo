@@ -1,0 +1,24 @@
+.custom-loader {
+  width: 20px;
+  height: 20px;
+  display: grid;
+  animation: s4 4s infinite;
+}
+.custom-loader::before,
+.custom-loader::after {
+  content:"";
+  grid-area: 1/1;
+  border:2px solid;
+  border-radius: 50%;
+  border-color:#d6fff2 #d6fff2 #0000 #0000;
+  mix-blend-mode: darken;
+  animation: s4 1s infinite linear;
+}
+.custom-loader::after {
+  border-color:#0000 #0000 #c9c9ca #E4E4ED;
+  animation-direction: reverse;
+}
+
+@keyframes s4{
+  100%{transform: rotate(1turn)}
+}

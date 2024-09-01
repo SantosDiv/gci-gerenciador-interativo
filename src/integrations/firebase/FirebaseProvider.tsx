@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, getDoc, addDoc, updateDoc, deleteDoc, getFirestore, query, where } from "firebase/firestore";
+import { collection, doc, getDocs, getDoc, addDoc, updateDoc, deleteDoc, getFirestore, query, where, WhereFilterOp } from "firebase/firestore";
 import FirebaseApp from './FirebaseConfig';
 import rescueError from '@/utils/rescueError';
 
@@ -8,7 +8,35 @@ interface UserInterface {
 }
 class FirbaseProvider {
 
-  async getDocsByCollection(collectionName: string, currentUser: UserInterface | null) {
+  async getDocByQuery(collectionName: string, queryParams: Array<{ key:string, operation:WhereFilterOp, value: any }>) {
+    try {
+      const db = getFirestore();
+
+      const conditions = queryParams.map(({key, operation, value}) => where(key, operation, value))
+
+      const q = query(
+        collection(db, collectionName),
+        ...conditions
+      );
+
+      const querySnapshot = await getDocs(q);
+
+      const docs = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return { id: doc.id, ...data };
+      });
+
+      if (docs.length) {
+        return docs;
+      }
+
+      return null;
+    } catch (error) {
+      rescueError(error);
+    }
+  }
+
+  async getDocsByCollection(collectionName: string, currentUser?: UserInterface | null) {
     try {
 
       const db = getFirestore();
@@ -22,8 +50,8 @@ class FirbaseProvider {
       const querySnapshot = await getDocs(q);
 
       const docs = querySnapshot.docs.map((doc) => {
-        const { name, difficult_level, period, themes, percent } = doc.data();
-        return { id: doc.id, name, difficult_level, period, themes, percent };
+        const data = doc.data();
+        return { id: doc.id, ...data };
       });
 
       return docs;
@@ -39,9 +67,9 @@ class FirbaseProvider {
       const docSnapshot = await getDoc(docRef);
 
       if (docSnapshot.exists()) {
-        const { name, difficult_level, period, themes, percent } = docSnapshot.data();
+        const data = docSnapshot.data();
 
-        return { id: docSnapshot.id, name, difficult_level, period, themes, percent };
+        return { id: docSnapshot.id, ...data };
       } else {
         throw new Error("Documento não encontrado");
       }
@@ -50,18 +78,14 @@ class FirbaseProvider {
     }
   }
 
-  async createDoc(collectionName:string, params:any, currentUser: UserInterface | null) {
+  async createDoc(collectionName:string, params:any, currentUser?: UserInterface | null) {
     const userId = currentUser?.uid || localStorage.getItem('uid')|| '';
 
     try {
       const db = getFirestore(FirebaseApp)
       const docRef = await addDoc(collection(db, collectionName), {
-       name: params.name,
-       period: params.period,
-       difficult_level: params.difficult_level,
-       percent: params.percent,
-       userId: userId,
-       themes: params.themes
+        ...params,
+        userId: userId,
      });
 
      return docRef.id;

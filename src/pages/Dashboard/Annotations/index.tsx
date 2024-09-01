@@ -1,72 +1,71 @@
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { MainTable, MainTableLine, MainTableLineTitle } from "@/components/common/MainTable";
-import TitleSection from "@/components/common/TitleSection";
 import { BsEye } from "react-icons/bs";
 import { BiTrash, BiPencil } from "react-icons/bi";
+
+import { MainTable, MainTableLine, MainTableLineTitle } from "@/components/common/MainTable";
+import TitleSection from "@/components/common/TitleSection";
 import CustomButton from "@/components/common/CustomButton";
 
-const ANNOTATIONS_DATA = [
-  {
-    id: "asdasdasd",
-    title: "Anotação 1",
-    text: "Testando",
-    module_id: 'aewewegg',
-    module_title: "Modulo 1",
-    discipline_title: "Sociedade",
-    user_id: 'arwkwaekj'
-  },
-  {
-    id: "asdergfg",
-    title: "Anotação 2",
-    text: "Testando 2",
-    module_id: 'aewewegg',
-    module_title: "Modulo 1",
-    discipline_title: "Sociedade",
-    user_id: 'arwkwaekj'
-  },
-  {
-    id: "fggf565",
-    title: "Anotação 3",
-    text: "Testando",
-    module_id: 'aewewegg',
-    module_title: "Modulo 1",
-    discipline_title: "Sociedade",
-    user_id: 'arwkwaekj'
-  },
-  {
-    id: "fdgd787",
-    title: "Anotação 4",
-    text: "Testando",
-    module_id: 'ffhhghf',
-    module_title: "Modulo 2",
-    discipline_title: "Arquitetura",
-    user_id: 'arwkwaekj'
-  },
-]
+import { AnnotationResponseInterface } from "@/interfaces/AnnotationInterface";
 
+import FirebaseProvider from '@/integrations/firebase/FirebaseProvider';
+import Loading from "@/components/common/Loading";
 
 export default function Annotations() {
   const navigate = useNavigate();
 
+  const [annotations, setAnnotations] = useState<AnnotationResponseInterface[]>([]);
+
+  useEffect(() => {
+    const getAllAnnotationsByCurrentUser = async () => {
+      const firebaseProvider = new FirebaseProvider();
+
+      const response = await firebaseProvider.getDocsByCollection('annotations');
+      if (response) {
+        setAnnotations(response);
+      }
+    }
+
+    getAllAnnotationsByCurrentUser();
+  }, [])
+
+  const goBack = () => {
+    return navigate(-1);
+  }
+
   return(<>
     <TitleSection text="Minhas anotações">
-      <CustomButton onClick={() => navigate('/dashboard/annotations/new')} value="Nova anotação" className="w-[180px] flex !justify-center"/>
+      <CustomButton onClick={goBack} value="Voltar" className="w-[100px] flex !justify-center"/>
     </TitleSection>
     <div className="h-[600px] overflow-auto">
-      <MainTable>
-        {
-          ANNOTATIONS_DATA.map((annotation) => <MainTableLine key={annotation.id} className="p-4">
-            <MainTableLineTitle text={annotation.title}/>
-            <h2>{annotation.module_title}</h2>
-            <h2>{annotation.discipline_title}</h2>
-            <div className="flex gap-6">
-              <Link to={`/dashboard/annotations/${annotation.id}`}><BsEye/></Link>
-              <Link to={`/dashboard/annotations/${annotation.id}/edit`}><BiPencil/></Link>
-              <BiTrash/>
-            </div>
-        </MainTableLine>)
-        }
-      </MainTable>
+      {
+        !annotations.length
+        ? <div className="w-full flex justify-center items-center h-[500px]"><Loading/></div>
+        : <MainTable>
+          { annotations.map((annotation) => <MainTableLine key={annotation.id} className="p-4">
+              <div className="w-[400px] truncate">
+                <span className="font-bold">Título:</span>
+                <MainTableLineTitle text={annotation.title || ''} className="truncate"/>
+              </div>
+              <div className="w-[400px] truncate">
+                <span className="font-bold">Módulo:</span>
+                <h2 className="truncate">{annotation.module_title}</h2>
+              </div>
+
+              <div className="w-[400px] truncate">
+                <span className="font-bold">Matéria:</span>
+                <h2 className="truncate">{annotation.discipline_title}</h2>
+              </div>
+              <div className="flex gap-6">
+                <Link to={`/dashboard/annotations/${annotation.id}`}><BsEye/></Link>
+                <Link to={`/dashboard/annotations/${annotation.id}/edit`}><BiPencil/></Link>
+                <BiTrash/>
+              </div>
+          </MainTableLine>)
+          }
+        </MainTable>
+      }
     </div>
   </>);
 }
