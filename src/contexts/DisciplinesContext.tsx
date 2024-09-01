@@ -34,6 +34,7 @@ export const DisciplineContextProvider = ({ children }:any) => {
     setLoading(true);
     const result = await firebaseProvider.getDocsByCollection(collectionName, currentUser);
     if (result) {
+      //@ts-ignore
       const disciplinesClass = result.map((item) => new Discipline(item));
       setDisciplines(disciplinesClass);
       setLoading(false)
@@ -44,6 +45,7 @@ export const DisciplineContextProvider = ({ children }:any) => {
     setLoading(true)
     const result = await firebaseProvider.getDocById('disciplines', docId);
     if (result) {
+      //@ts-ignore
       const disciplineClass = new Discipline(result);
       setDiscipline(disciplineClass);
       setLoading(false);
