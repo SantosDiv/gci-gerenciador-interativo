@@ -38,7 +38,7 @@ export default function DisciplineShow() {
   }
 
 
-  if (!discipline.themes.length) {
+  if (!discipline.themes?.length) {
     return <div className="w-full flex justify-center"><Loading/></div>
   }
 

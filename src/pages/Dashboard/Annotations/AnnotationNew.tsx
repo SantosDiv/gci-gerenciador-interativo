@@ -4,9 +4,12 @@ import { useForm } from "react-hook-form";
 import Input from "@/components/common/Input";
 import CustomButton from "@/components/common/CustomButton";
 import FirebaseProvider from '@/integrations/firebase/FirebaseProvider';
+import { useState } from "react";
+import Loading from "@/components/common/Loading";
 
 export default function AnnotationNew() {
   const { register, handleSubmit } = useForm();
+  const [loadingAnnotation, setLoadingAnnotation] = useState(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -15,6 +18,7 @@ export default function AnnotationNew() {
 
   const onSubmit = async (data: any) => {
     try {
+      setLoadingAnnotation(true);
       const moduleId = searchParams.get('module_id');
       const firebaseProvider = new FirebaseProvider();
 
@@ -30,6 +34,8 @@ export default function AnnotationNew() {
       navigate(-1);
     } catch (error) {
       console.log(error)
+    } finally {
+      setLoadingAnnotation(false);
     }
   }
 
@@ -39,7 +45,7 @@ export default function AnnotationNew() {
       <Input register={register} name="title" placeholder="Título da anotação" type="text" className="!rounded-3xl"/>
       <textarea rows={15} className='bg-grayGCI-700 border-grayGCI-500 border-[1px] p-4 rounded-3xl' {...register('text')} name="text" placeholder="Escreva sua anotação aqui..." />
 
-      <CustomButton value="Salvar" variant="thirty" className="w-[180px] !justify-center self-end"/>
+      {loadingAnnotation ? <Loading/> : <CustomButton value="Salvar" variant="thirty" className="w-[180px] !justify-center self-end"/>}
     </form>
   </>);
 }

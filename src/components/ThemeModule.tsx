@@ -1,17 +1,21 @@
+import { useContext, useEffect, useState } from "react";
+import clsx from "clsx";
 import { Link, useNavigate, createSearchParams } from "react-router-dom";
+import { WhereFilterOp } from "firebase/firestore";
+
 // import { BiTrash } from "react-icons/bi";
 import { RiStickyNoteAddFill, RiStickyNoteFill } from "react-icons/ri";
 import { GiPartyPopper } from "react-icons/gi";
 import { BsCheckLg } from "react-icons/bs";
+
 import { DisciplineModulesInterface, DisciplineThemeInterface } from "@/interfaces/DisciplinesInterface";
-import clsx from "clsx";
-import { useContext, useEffect, useState } from "react";
 import DisciplineContext from "@/contexts/DisciplinesContext";
-import Discipline from "@/domain/Discipline";
-import { AnnotationResponseInterface } from "@/interfaces/AnnotationInterface";
-import FirebaseProvider from '@/integrations/firebase/FirebaseProvider';
-import { WhereFilterOp } from "firebase/firestore";
 import Loading from "./common/Loading";
+import Discipline from "@/domain/Discipline";
+
+import { AnnotationResponseInterface } from "@/interfaces/AnnotationInterface";
+
+import FirebaseProvider from '@/integrations/firebase/FirebaseProvider';
 
 interface ThemeModuleProps {
   module:DisciplineModulesInterface;
@@ -24,21 +28,29 @@ export default function ThemeModule({ module, discipline }:ThemeModuleProps) {
 
   const { updateDiscipline, loading } = useContext(DisciplineContext);
   const [annotation, setAnnotation] = useState({} as AnnotationResponseInterface);
+  const [loadingAnnotation, setLoadingAnnotation] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const getAnnotation = async () => {
-      const firebaseProvider = new FirebaseProvider();
-      const queries = [
-        { key: 'userId', operation: '==' as WhereFilterOp, value: localStorage.getItem('uid')},
-        { key: 'module_id', operation: '==' as WhereFilterOp, value: module.id},
-      ]
+      try {
+        setLoadingAnnotation(true);
+        const firebaseProvider = new FirebaseProvider();
+        const queries = [
+          { key: 'userId', operation: '==' as WhereFilterOp, value: localStorage.getItem('uid')},
+          { key: 'module_id', operation: '==' as WhereFilterOp, value: module.id},
+        ]
+        const response = await firebaseProvider.getDocByQuery('annotations', queries)
 
-      const response = await firebaseProvider.getDocByQuery('annotations', queries)
-
-      if (response) {
-        setAnnotation(response[0]);
+        if (response) {
+          setAnnotation(response[0]);
+        }
+      } catch (error) {
+        alert(error);
+        console.log(error);
+      } finally {
+        setLoadingAnnotation(false);
       }
     }
 
@@ -90,7 +102,7 @@ export default function ThemeModule({ module, discipline }:ThemeModuleProps) {
       </div>
 
       {/* annotations, delete */}
-      {!annotation.id
+      { loadingAnnotation
       ? <Loading/>
       : <div className="flex items-center gap-4">
           { annotation.id
