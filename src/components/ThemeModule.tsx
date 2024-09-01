@@ -106,8 +106,8 @@ export default function ThemeModule({ module, discipline }:ThemeModuleProps) {
       ? <Loading/>
       : <div className="flex items-center gap-4">
           { annotation.id
-            ? <Link to={`/dashboard/annotations/${annotation.id}`}><RiStickyNoteFill className="cursor-pointer text-[20px]"/></Link>
-            : <RiStickyNoteAddFill className="cursor-pointer text-[20px]" onClick={goToNewAnnotiation}/>
+            ? <Link to={`/dashboard/annotations/${annotation.id}`} title="Ver anotação"><RiStickyNoteFill className="cursor-pointer text-[20px]"/></Link>
+            : <RiStickyNoteAddFill title="Nova anotação" className="cursor-pointer text-[20px]" onClick={goToNewAnnotiation}/>
           }
         </div>}
     </article>
