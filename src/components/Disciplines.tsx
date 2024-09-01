@@ -8,6 +8,7 @@ import DisciplineContext from "@/contexts/DisciplinesContext";
 import { getMotivationalPhrase } from "@/utils/calcPercent";
 import clsx from "clsx";
 import Discipline from "@/domain/Discipline";
+import Loading from "./common/Loading";
 
 export default function Disciplines() {
   const { getAllDisciplines, deleteDiscipline, disciplines, loading } = useContext(DisciplineContext);
@@ -39,21 +40,22 @@ export default function Disciplines() {
 
   return(
     <>
-    <MainTable>
-      {
-        loading ?
-        <p>Carregando..</p>
-        : disciplines.map((discipline) => <MainTableLine key={discipline.id}>
-          <MainTableLineTitle text={discipline.name} />
-          <div className="flex items-center gap-7">
-            <Link to={`disciplines/${discipline.id}`}><BsEye/></Link>
-            {/* <button><BiPencil/></button> */}
-            <button onClick={() => handleDelete(discipline)}><BiTrash/></button>
-            { renderPercentWithMotivacionalPhrase(discipline) }
-          </div>
-        </MainTableLine>)
-      }
-    </MainTable>
+    {
+      loading
+      ? <div className="w-full flex justify-center"><Loading/></div>
+      : <MainTable>
+          { disciplines.map((discipline) => <MainTableLine key={discipline.id}>
+              <MainTableLineTitle text={discipline.name} />
+              <div className="flex items-center gap-7">
+                <Link to={`disciplines/${discipline.id}`}><BsEye/></Link>
+                {/* <button><BiPencil/></button> */}
+                <button onClick={() => handleDelete(discipline)}><BiTrash/></button>
+                { renderPercentWithMotivacionalPhrase(discipline) }
+              </div>
+            </MainTableLine>)
+          }
+        </MainTable>
+    }
     </>
   )
 

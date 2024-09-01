@@ -6,13 +6,17 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import Input from '@/components/common/Input';
 import logo from '@/assets/gci-logo.svg';
 import JoiValidation from "@/utils/JoiValidation";
+import { useState } from 'react';
+import Loading from '@/components/common/Loading';
 
 export default function Login() {
   const { register, handleSubmit } = useForm();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const onSubmit = async (data:any) => {
     try {
+      setLoading(true);
       await new JoiValidation().loginValidation(data);
       const result = await signInWithEmailAndPassword(auth, data.email, data.password);
       localStorage.setItem('uid', result.user.uid);
@@ -21,6 +25,8 @@ export default function Login() {
     } catch (error) {
       alert(error);
       console.log(error)
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -41,7 +47,9 @@ export default function Login() {
         <Input type='text' placeholder='Email' register={register} name='email' className='w-[80%]'/>
         <Input type='password' placeholder='Password' register={register} name='password' className='w-[80%]'/>
 
-        <button type='submit' className='bg-blueGCI-500 p-3 rounded-full w-[80%]'>Entrar</button>
+        <button type='submit' className='bg-blueGCI-500 p-3 rounded-full w-[80%] flex justify-center'>
+          { loading ? <Loading/> : "Entrar" }
+        </button>
       </form>
     </section>
   </main>
