@@ -3,6 +3,7 @@ import { BiPlus } from 'react-icons/bi';
 import { signOut } from 'firebase/auth';
 import { FiLogOut } from "react-icons/fi";
 import { auth } from '@/integrations/firebase/FirebaseConfig';
+import { FaNoteSticky } from 'react-icons/fa6';
 
 import CustomButton from '@/components/common/CustomButton';
 
@@ -27,7 +28,7 @@ export default function SideBarMenu() {
         <Link to='/dashboard'><img src={logo} alt="Logo gci medium" className='h-[4rem] mt-10' /></Link>
         <nav className='mt-10 w-[80%] flex flex-col gap-5'>
           <CustomButton onClick={() => navigate('/dashboard/disciplines/new')} value="Nova Matéria" icon={<BiPlus/>} />
-          {/* <CustomButton value="Anotações" icon={<FaNoteSticky/>} variant='secondary'/> */}
+          <CustomButton value="Anotações" icon={<FaNoteSticky/>} variant='secondary' onClick={() => navigate('/dashboard/annotations')}/>
         </nav>
       </div>
 

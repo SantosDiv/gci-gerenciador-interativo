@@ -12,9 +12,10 @@ import DisciplineContext from '@/contexts/DisciplinesContext';
 
 import generateRandomString from '@/utils/generateRandomString';
 import { CreateDisciplineParams } from '@/interfaces/joiValidationInterface';
+import Loading from '@/components/common/Loading';
 
 export default function DisciplineNew() {
-  const { createDiscipline } = useContext(DisciplineContext);
+  const { createDiscipline, loading } = useContext(DisciplineContext);
   const { register, handleSubmit, resetField } = useForm();
   const [themes, setThemes] = useState<any>([]);
   const [moduleTitle, setModuleTitle] = useState('');
@@ -64,6 +65,11 @@ export default function DisciplineNew() {
   }
 
   const handleAddModule = (themeTitle:any) => {
+
+    if(!moduleTitle) {
+      alert('Não pode haver módulos sem títulos!')
+      return;
+    }
 
     const themesEdited = themes.reduce((acc:any, theme:any) => {
       if(theme.title === themeTitle) {
@@ -139,6 +145,6 @@ export default function DisciplineNew() {
       </MainTable>
     </form>
 
-    <CustomButton form='form-create' value='Finalizar criação' type='submit' variant='thirty' className='!justify-center !w-[15%]'/>
+    { loading ? <Loading/> : <CustomButton form='form-create' value='Finalizar criação' type='submit' variant='thirty' className='!justify-center !w-[15%]'/>}
   </>
 }

@@ -1,13 +1,21 @@
-import { Link } from "react-router-dom";
-import { FaNoteSticky } from "react-icons/fa6";
+import { useContext, useEffect, useState } from "react";
+import clsx from "clsx";
+import { Link, useNavigate, createSearchParams } from "react-router-dom";
+import { WhereFilterOp } from "firebase/firestore";
+
 // import { BiTrash } from "react-icons/bi";
+import { RiStickyNoteAddFill, RiStickyNoteFill } from "react-icons/ri";
 import { GiPartyPopper } from "react-icons/gi";
 import { BsCheckLg } from "react-icons/bs";
+
 import { DisciplineModulesInterface, DisciplineThemeInterface } from "@/interfaces/DisciplinesInterface";
-import clsx from "clsx";
-import { useContext } from "react";
 import DisciplineContext from "@/contexts/DisciplinesContext";
+import Loading from "./common/Loading";
 import Discipline from "@/domain/Discipline";
+
+import { AnnotationResponseInterface } from "@/interfaces/AnnotationInterface";
+
+import FirebaseProvider from '@/integrations/firebase/FirebaseProvider';
 
 interface ThemeModuleProps {
   module:DisciplineModulesInterface;
@@ -19,11 +27,51 @@ interface ThemeModuleProps {
 export default function ThemeModule({ module, discipline }:ThemeModuleProps) {
 
   const { updateDiscipline, loading } = useContext(DisciplineContext);
+  const [annotation, setAnnotation] = useState({} as AnnotationResponseInterface);
+  const [loadingAnnotation, setLoadingAnnotation] = useState(false);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const getAnnotation = async () => {
+      try {
+        setLoadingAnnotation(true);
+        const firebaseProvider = new FirebaseProvider();
+        const queries = [
+          { key: 'userId', operation: '==' as WhereFilterOp, value: localStorage.getItem('uid')},
+          { key: 'module_id', operation: '==' as WhereFilterOp, value: module.id},
+        ]
+        const response = await firebaseProvider.getDocByQuery('annotations', queries)
+
+        if (response) {
+          setAnnotation(response[0]);
+        }
+      } catch (error) {
+        alert(error);
+        console.log(error);
+      } finally {
+        setLoadingAnnotation(false);
+      }
+    }
+
+    getAnnotation();
+  }, []);
 
   const checkModule = async () => {
     discipline.changeStatusModule(module);
 
     await updateDiscipline(discipline);
+  }
+
+  const goToNewAnnotiation = () => {
+    navigate({
+      pathname:`/dashboard/annotations/new`,
+      search: createSearchParams({
+        module_id: module.id,
+        module_name: module.title,
+        discipline_title: discipline.name,
+      }).toString(),
+    })
   }
 
 
@@ -54,10 +102,14 @@ export default function ThemeModule({ module, discipline }:ThemeModuleProps) {
       </div>
 
       {/* annotations, delete */}
-      <div className="flex items-center gap-4">
-        { module.anotations?.length && <Link to="/"><FaNoteSticky/></Link>}
-        {/* <button><BiTrash/></button> */}
-      </div>
+      { loadingAnnotation
+      ? <Loading/>
+      : <div className="flex items-center gap-4">
+          { annotation.id
+            ? <Link to={`/dashboard/annotations/${annotation.id}`} title="Ver anotação"><RiStickyNoteFill className="cursor-pointer text-[20px]"/></Link>
+            : <RiStickyNoteAddFill title="Nova anotação" className="cursor-pointer text-[20px]" onClick={goToNewAnnotiation}/>
+          }
+        </div>}
     </article>
   )
 }

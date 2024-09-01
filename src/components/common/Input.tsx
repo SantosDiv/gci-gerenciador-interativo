@@ -1,7 +1,7 @@
-import { MutableRefObject } from "react";
+import { InputHTMLAttributes, MutableRefObject } from "react";
 import clsx from "clsx";
 
-interface InputProps {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   type: string;
   className?: string;
@@ -10,7 +10,7 @@ interface InputProps {
   register(name:string): any
 }
 
-export default function Input({ type, name, placeholder, className, register, ref }:InputProps) {
+export default function Input({ type, name, placeholder, className, register, ref, ...props }:InputProps) {
 
   return (
     <input
@@ -19,6 +19,7 @@ export default function Input({ type, name, placeholder, className, register, re
       placeholder={placeholder}
       autoComplete="off"
       ref={ref}
+      { ...props }
       {...register(name)}
     />
   );

@@ -9,6 +9,7 @@ import ThemeModule from "@/components/ThemeModule";
 import { getMotivationalPhrase } from "@/utils/calcPercent";
 import clsx from "clsx";
 import TitleSection from "@/components/common/TitleSection";
+import Loading from "@/components/common/Loading";
 
 export default function DisciplineShow() {
   const { id } = useParams();
@@ -36,6 +37,11 @@ export default function DisciplineShow() {
           </div>
   }
 
+
+  if (!discipline.themes?.length) {
+    return <div className="w-full flex justify-center"><Loading/></div>
+  }
+
   return <>
     <TitleSection text={`Matéria detalhada: ${discipline.name}`}/>
     <MainTable>
@@ -47,7 +53,7 @@ export default function DisciplineShow() {
             {/* <button><BiPencil/></button> */}
             {/* <button><BiTrash/></button> */}
             { loading
-             ? <>Carregando...</>
+             ? <Loading/>
              : renderPercentWithMotivacionalPhrase(theme.percent)}
           </div>
       </MainTableSelect>)
