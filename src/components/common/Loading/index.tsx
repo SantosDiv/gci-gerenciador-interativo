@@ -1,5 +1,10 @@
+import clsx from 'clsx';
 import './style.css';
 
-export default function Loading() {
-  return(<div className="custom-loader"></div>);
+interface LoadingProps {
+  className?: string;
+}
+
+export default function Loading({ className }:LoadingProps) {
+  return(<div className={clsx("custom-loader", className)}></div>);
 }
