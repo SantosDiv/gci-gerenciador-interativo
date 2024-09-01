@@ -13,4 +13,5 @@ A plataforma também conta com o auxílio da IA do Google Gemini, para tirar alg
 
 ## Acesso
 O Acesso ainda é restrito, então para ter acesso é preciso entrar em contato pelo email: diogenes.santosfelipe@gmail.com
-(https://gerenciadorinterativoia.netlify.app/)[link da plataforma];
+
+Link: https://gerenciadorinterativoia.netlify.app/
